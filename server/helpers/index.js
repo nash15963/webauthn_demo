@@ -1,4 +1,5 @@
 'use strict';
+require("dotenv").config();
 const crypto = require('crypto');
 const base64url = require('base64url');
 const cbor = require('cbor');
@@ -133,7 +134,9 @@ async function verifyAuthenticatorAttestationResponse(webAuthnResponse) {
 	const ctapMakeCredResp = cbor.decodeAllSync(attestationBuffer)[0];
 	const { clientDataJSON } = webAuthnResponse.response;
 	let verification;
-	console.log(ctapMakeCredResp);
+	
+	console.log("ctapMakeCredResp :", ctapMakeCredResp);
+
 	if (ctapMakeCredResp.fmt === 'fido-u2f') 
 		verification = await verifyU2FAttestation(ctapMakeCredResp, clientDataJSON);
 	else if (ctapMakeCredResp.fmt === 'packed')
@@ -142,9 +145,15 @@ async function verifyAuthenticatorAttestationResponse(webAuthnResponse) {
 		verification = await verifyAndroidKeyAttestation(ctapMakeCredResp, clientDataJSON);
 	else if (ctapMakeCredResp.fmt === 'android-safetynet')
 		verification = await verifyAndroidSafetyNetAttestation(ctapMakeCredResp, clientDataJSON);
-	else if (ctapMakeCredResp.fmt === 'none')
-		verification = await noneAttestation(ctapMakeCredResp, clientDataJSON);
-
+	else {
+		verification = {
+			verified: false,
+			verification: {
+				fmt: 'none',
+			},
+		}
+	}
+	
 	const { verified, authrInfo } = verification;
 	if (verified) {
 		const response = {

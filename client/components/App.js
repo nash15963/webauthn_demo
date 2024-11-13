@@ -17,10 +17,16 @@ function App() {
 	const handleRegister = () => {
 		getMakeCredentialsChallenge({email})
 			.then((response) => {
+				console.log("getMakeCredentialsChallenge response :", response);
+				
 				const publicKey = preformatMakeCredReq(response);
+				
+				console.log("publicKey :", publicKey);
+				
 				return navigator.credentials.create({ publicKey });
 			})
 			.then((response) => {
+				console.log("navigator.credentials.create response :", response);
 				const makeCredResponse = publicKeyCredentialToJSON(response);
 				return sendWebAuthnResponse(makeCredResponse);
 			})
@@ -39,6 +45,7 @@ function App() {
 							setErrMsg(err.response.data);
 						else
 							console.log(err);
+							alert('Registration failed. unsupported device');
 					});
 			});
 	};

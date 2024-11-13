@@ -1,9 +1,10 @@
 "use strict";
+require("dotenv").config();
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-const serverPort = process.env.PORT || 8080;
+const serverPort = process.env.PORT
 
 module.exports = {
   entry: ["core-js/stable", "regenerator-runtime/runtime", "./client/index.js"],

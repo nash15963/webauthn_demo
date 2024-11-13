@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/webauthn', userRouter);
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 
 app.listen(port, () => {
 	console.log('Server listening on http://localhost:' + port);

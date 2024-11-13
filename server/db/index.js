@@ -1,6 +1,7 @@
 'use strict';
 const mongoose = require('mongoose');
-const dbConnection = process.env.DB_CONNECTION || "mongodb://127.0.0.1:27017/webauthn";
+require('dotenv').config();
+const dbConnection = process.env.DB_CONNECTION
 
 console.log("dbConnection :", dbConnection);
 
